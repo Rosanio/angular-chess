@@ -6,7 +6,7 @@ import { ChessboardComponent } from './chessboard.component';
   directives: [ChessboardComponent],
   template: `
   <div class="container">
-    <h1>Skeleton Angular2 App!</h1>
+    <h1>Chess!</h1>
     <chess-board></chess-board>
   </div>
     `

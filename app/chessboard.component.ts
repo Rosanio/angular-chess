@@ -1,12 +1,17 @@
 import { Component } from 'angular2/core';
 import { Space } from './space.model';
+import { BoardSpaceComponent } from './board-space.component';
 
 @Component({
   selector: 'chess-board',
+  directives: [BoardSpaceComponent],
   template: `
     <button (click)="generateBoard()">Go!</button>
     <div class="chessboard" *ngIf="launchedGame">
-      <p>it wrks</p>
+      <div *ngFor="#currentSpace of spaces">
+        <board-space [space]="currentSpace" [selected]="firstClick"
+        [class.selected]="currentSpace === selectedSpace" (click)="selectSpace(currentSpace)"></board-space>
+      </div>
     </div>
   `
 })
@@ -14,6 +19,8 @@ import { Space } from './space.model';
 export class ChessboardComponent {
   public spaces: Space[] = [];
   public launchedGame: boolean = false;
+  public firstClick: boolean = false;
+  public selectedSpace: Space;
   constructor() {};
   generateBoard() {
     var columnNames = ["A","B","C","D","E","F","G","H"];
@@ -29,6 +36,15 @@ export class ChessboardComponent {
       }
     }
     this.launchedGame = true;
+  }
+  selectSpace(clickedSpace: Space) {
+    if(this.firstClick) {
+      this.selectedSpace = undefined;
+      this.firstClick = false;
+    } else {
+      this.selectedSpace = clickedSpace;
+      this.firstClick = true;
+    }
   }
 
 }
