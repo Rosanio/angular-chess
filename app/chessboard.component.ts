@@ -23,6 +23,7 @@ export class ChessboardComponent {
   public launchedGame: boolean = false;
   public firstClick: boolean = false;
   public selectedSpace: Space;
+  public selectedPiece: Piece;
   constructor() {};
   generateBoard() {
     var columnNames = ["A","B","C","D","E","F","G","H"];
@@ -48,29 +49,22 @@ export class ChessboardComponent {
     } else if (i === 6) {
       this.generatePawn(space, "black");
     } else if (i===0) {
-      if(j===0 || j===7) {
-        this.generateRook(space, "white");
-      } else if (j===1 || j===6) {
-        this.generateKnight(space, "white");
-      } else if (j===2 || j===5) {
-        this.generateBishop(space, "white");
-      } else if (j===3) {
-        this.generateQueen(space, "white");
-      } else if (j===4) {
-        this.generateKing(space, "white");
-      }
+      this.generateNonPawns(space, "white", i, j);
     } else if (i===7) {
-      if(j===0 || j===7) {
-        this.generateRook(space, "black");
-      } else if (j===1 || j===6) {
-        this.generateKnight(space, "black");
-      } else if (j===2 || j===5) {
-        this.generateBishop(space, "black");
-      } else if (j===3) {
-        this.generateQueen(space, "black");
-      } else if (j===4) {
-        this.generateKing(space, "black");
-      }
+      this.generateNonPawns(space, "black", i, j);
+    }
+  }
+  generateNonPawns(space: Space, color: string, i: number, j: number) {
+    if(j===0 || j===7) {
+      this.generateRook(space, color);
+    } else if (j===1 || j===6) {
+      this.generateKnight(space, color);
+    } else if (j===2 || j===5) {
+      this.generateBishop(space, color);
+    } else if (j===3) {
+      this.generateQueen(space, color);
+    } else if (j===4) {
+      this.generateKing(space, color);
     }
   }
   generatePawn(space: Space, color: string) {
@@ -105,11 +99,18 @@ export class ChessboardComponent {
   }
   selectSpace(clickedSpace: Space) {
     if(this.firstClick) {
-      this.selectedSpace = undefined;
-      this.firstClick = false;
+      if(!clickedSpace.piece) {
+        clickedSpace.piece = this.selectedPiece;
+        this.selectedSpace.piece = undefined;
+        this.selectedSpace = undefined;
+        this.firstClick = false;
+      }
     } else {
-      this.selectedSpace = clickedSpace;
-      this.firstClick = true;
+      if(clickedSpace.piece) {
+        this.selectedSpace = clickedSpace;
+        this.selectedPiece = clickedSpace.piece;
+        this.firstClick = true;
+      }
     }
   }
 
