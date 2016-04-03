@@ -41,15 +41,14 @@ export class ChessboardComponent {
   public selectedPiece: Piece;
   constructor() {};
   generateBoard() {
-    var columnNames = ["A","B","C","D","E","F","G","H"];
     for(var i = 0; i < 8; i++) {
       for(var j = 0; j < 8; j++) {
         if((i+j)%2===0) {
-          var newSpace = new Space("white", i, columnNames[j]);
+          var newSpace = new Space("white", i, j);
           this.generatePieces(newSpace, i, j);
           this.spaces.push(newSpace);
         } else {
-          var newSpace = new Space("black", i, columnNames[j]);
+          var newSpace = new Space("black", i, j);
           this.generatePieces(newSpace, i, j);
           this.spaces.push(newSpace);
         }
@@ -113,19 +112,42 @@ export class ChessboardComponent {
     this.pieces.push(newPiece);
   }
   selectSpace(clickedSpace: Space) {
-    console.log(clickedSpace.piece);
     if(this.firstClick) {
       if(!clickedSpace.piece || (clickedSpace.piece.color !== this.selectedPiece.color)) {
-        clickedSpace.piece = this.selectedPiece;
-        this.selectedSpace.piece = undefined;
-        this.selectedSpace = undefined;
-        this.firstClick = false;
+        if(this.selectedPiece.name === "pawn" && this.legitPawnMove(this.selectedSpace, clickedSpace, this.selectedPiece.color)) {
+          clickedSpace.piece = this.selectedPiece;
+          this.selectedSpace.piece = undefined;
+        }
       }
+      this.selectedSpace = undefined;
+      this.selectedPiece = undefined;
+      this.firstClick = false;
     } else {
       if(clickedSpace.piece) {
         this.selectedSpace = clickedSpace;
         this.selectedPiece = clickedSpace.piece;
         this.firstClick = true;
+      }
+    }
+  }
+  legitPawnMove(currentSpace: Space, moveSpace:Space, color: string) {
+    if(color==="white") {
+      if(currentSpace.row===1){
+        if(moveSpace.row <= 3 && moveSpace.row > 1 && moveSpace.column === currentSpace.column) {
+          return true;
+        } else if (moveSpace.row === 2 && (moveSpace.column === currentSpace.column+1 || moveSpace.column === currentSpace.column-1) && moveSpace.piece) {
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        if(moveSpace.row === currentSpace.row+1 && moveSpace.column === currentSpace.column && !moveSpace.piece) {
+          return true;
+        } else if (moveSpace.row === currentSpace.row+1 && (moveSpace.column === currentSpace.column+1 || moveSpace.column === currentSpace.column-1) && moveSpace.piece) {
+          return true;
+        } else {
+          return false;
+        }
       }
     }
   }

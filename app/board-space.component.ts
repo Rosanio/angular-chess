@@ -21,6 +21,6 @@ export class BoardSpaceComponent {
   public space: Space;
   public selected: boolean;
   selectSpace() {
-    console.log(this.selected);
+    console.log(this.space);
   }
 }
