@@ -30,19 +30,11 @@ export class ChessboardComponent {
       for(var j = 0; j < 8; j++) {
         if((i+j)%2===0) {
           var newSpace = new Space("white", i, columnNames[j]);
-          if(i===1) {
-            this.generatePawn(newSpace, "white");
-          } else if (i === 6) {
-            this.generatePawn(newSpace, "black");
-          }
+          this.generatePieces(newSpace, i, j);
           this.spaces.push(newSpace);
         } else {
           var newSpace = new Space("black", i, columnNames[j]);
-          if(i===1) {
-            this.generatePawn(newSpace, "white");
-          } else if (i === 6) {
-            this.generatePawn(newSpace, "black");
-          }
+          this.generatePieces(newSpace, i, j);
           this.spaces.push(newSpace);
         }
       }
@@ -50,8 +42,64 @@ export class ChessboardComponent {
     console.log(this.spaces);
     this.launchedGame = true;
   }
+  generatePieces(space: Space, i: number, j: number) {
+    if(i===1) {
+      this.generatePawn(space, "white");
+    } else if (i === 6) {
+      this.generatePawn(space, "black");
+    } else if (i===0) {
+      if(j===0 || j===7) {
+        this.generateRook(space, "white");
+      } else if (j===1 || j===6) {
+        this.generateKnight(space, "white");
+      } else if (j===2 || j===5) {
+        this.generateBishop(space, "white");
+      } else if (j===3) {
+        this.generateQueen(space, "white");
+      } else if (j===4) {
+        this.generateKing(space, "white");
+      }
+    } else if (i===7) {
+      if(j===0 || j===7) {
+        this.generateRook(space, "black");
+      } else if (j===1 || j===6) {
+        this.generateKnight(space, "black");
+      } else if (j===2 || j===5) {
+        this.generateBishop(space, "black");
+      } else if (j===3) {
+        this.generateQueen(space, "black");
+      } else if (j===4) {
+        this.generateKing(space, "black");
+      }
+    }
+  }
   generatePawn(space: Space, color: string) {
     var newPiece = new Piece("pawn", color, "P");
+    space.piece = newPiece;
+    this.pieces.push(newPiece);
+  }
+  generateRook(space: Space, color: string) {
+    var newPiece = new Piece("rook", color, "R");
+    space.piece = newPiece;
+    this.pieces.push(newPiece);
+  }
+  generateKnight(space: Space, color: string) {
+    var newPiece = new Piece("knight", color, "Kn");
+    space.piece = newPiece;
+    this.pieces.push(newPiece);
+  }
+  generateBishop(space: Space, color: string) {
+    var newPiece = new Piece("bishop", color, "B");
+    space.piece = newPiece;
+    this.pieces.push(newPiece);
+  }
+  generateQueen(space: Space, color: string) {
+    var newPiece = new Piece("queen", color, "Q");
+    space.piece = newPiece;
+    this.pieces.push(newPiece);
+  }
+  generateKing(space: Space, color: string) {
+    var newPiece = new Piece("king", color, "K");
     space.piece = newPiece;
     this.pieces.push(newPiece);
   }

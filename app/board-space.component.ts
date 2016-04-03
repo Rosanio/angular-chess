@@ -9,7 +9,10 @@ import { Space } from './space.model';
       [class.white]="space.color==='white'"
       [class.black]="space.color==='black'"
       (click)="selectSpace()">
-      <p *ngIf="space.piece">{{ space.piece.symbol }}</p>
+      <p *ngIf="space.piece"
+        [class.whitePiece]="space.piece.color==='white'"
+        [class.blackPiece]="space.piece.color==='black'">
+      {{ space.piece.symbol }}</p>
     </div>
   `
 })
