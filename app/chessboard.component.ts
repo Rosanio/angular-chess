@@ -1,3 +1,18 @@
+/*TODO
+
+
+  restrict piece movement based on type
+
+  add player switching functionality
+
+  build out ui to give indications about whose turn it is, and errors if invalid move is made
+
+  add win conditions
+
+  add check logic
+*/
+
+
 import { Component } from 'angular2/core';
 import { Space } from './space.model';
 import { Piece } from './piece.model';
@@ -98,8 +113,9 @@ export class ChessboardComponent {
     this.pieces.push(newPiece);
   }
   selectSpace(clickedSpace: Space) {
+    console.log(clickedSpace.piece);
     if(this.firstClick) {
-      if(!clickedSpace.piece) {
+      if(!clickedSpace.piece || (clickedSpace.piece.color !== this.selectedPiece.color)) {
         clickedSpace.piece = this.selectedPiece;
         this.selectedSpace.piece = undefined;
         this.selectedSpace = undefined;
