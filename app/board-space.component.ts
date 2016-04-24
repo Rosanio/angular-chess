@@ -20,7 +20,4 @@ import { Space } from './space.model';
 export class BoardSpaceComponent {
   public space: Space;
   public selected: boolean;
-  selectSpace() {
-    console.log(this.space);
-  }
 }
